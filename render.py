@@ -5,9 +5,12 @@ pygame.init()
 pygame.display.set_caption("Rubik's Racer")
  
 # [width, height]
-size = (400, 400)
+puzzle_size = 400
+outer_border = 180
+size = (puzzle_size + 2 * outer_border, puzzle_size + 2 * outer_border)
 center = (size[0] // 2, size[1] // 2)
-tile_size = (size[0] - 20) // 5 # 6px padding on each size, 2px between tiles
+tile_size = (size[0] - 2 * outer_border) // 5 # 6px padding on each size, 2px between tiles
+target_tile_size = tile_size // 3
 screen = pygame.display.set_mode(size)
 done = False
 clock = pygame.time.Clock()
@@ -22,12 +25,27 @@ print(game.get("puzzle"))
 
 # Helper functions
 
+def draw_target(target):
+    # draw 3x3 target in top right
+    gap = 2
+    n = len(target)
+    target_size = target_tile_size * n + gap * (n-1)
+    start = (puzzle_size + outer_border + (outer_border - target_size) // 2, (outer_border - target_size) // 2)
+    # skip 1 and n-1 since only 3x3 center is relevant
+    for row in range(1,n-1):
+        for col in range(1,n-1):
+            color = target[row][col]
+            x = start[0] + col * (target_tile_size + 2)
+            y = start[1] + row * (target_tile_size + 2)
+            pygame.draw.rect(screen, color_to_rgb(color), (x, y, target_tile_size, target_tile_size))
+
 def draw_grid(grid):
     gap = 2
-    grid_size = tile_size * 5 + gap * 4
+    n = len(grid)
+    grid_size = tile_size * n + gap * (n-1)
     start = (center[0] - grid_size // 2, center[1] - grid_size // 2)
-    for row in range(5):
-        for col in range(5):
+    for row in range(n):
+        for col in range(n):
             color = grid[row][col]
             x = start[0] + col * (tile_size + 2)
             y = start[1] + row * (tile_size + 2)
@@ -77,6 +95,7 @@ while not done:
  
     # Drawing code
     draw_grid(game["puzzle"])
+    draw_target(game["target"])
 
     # Update screen @ 60 FPS
     pygame.display.flip()
