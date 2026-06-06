@@ -49,9 +49,40 @@ def is_solved(puzzle, target):
                 return False
     return True
 
+# puzzle is a 1d tuple
+def is_solved_1d(puzzle, target):
+    # check if 3x3 center matches target
+    for r in range(1,4):
+        for c in range(1,4):
+            if puzzle[5*r+c] != target[5*r+c]:
+                return False
+    return True
+
 def find_empty_tile(puzzle):
     for r in range(5):
         for c in range(5):
             if puzzle[r][c] == None:
                 return (r,c)
     raise ValueError("No empty tile found in puzzle")
+
+def grid_to_tuple(grid):
+    return tuple(tile for row in grid for tile in row)
+
+def get_moves_from_path(path):
+    moves = []
+    for i in range(len(path)-1):
+        a = path[i]
+        b = path[i+1]
+        idx_a = a.index(None)
+        idx_b = b.index(None)
+        if idx_b == idx_a + 5:
+            moves.append("UP")
+        elif idx_b == idx_a - 5:
+            moves.append("DOWN")
+        elif idx_b == idx_a + 1:
+            moves.append("LEFT")
+        elif idx_b == idx_a - 1:
+            moves.append("RIGHT")
+        else:
+            raise ValueError("Invalid path")
+    return moves
