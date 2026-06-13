@@ -10,7 +10,7 @@ from util import is_solved_1d, grid_to_tuple
 
 lib_ext = '.dll' if os.name == 'nt' else '.so'
 lib_name = f'heuristic{lib_ext}'
-lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), lib_name))
+lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'heuristic', lib_name))
 
 # load C++ library
 try:

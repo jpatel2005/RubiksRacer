@@ -1,5 +1,8 @@
 __pycache__
 
 # executables
-ida/heuristic.so
-ida/heuristic.dll
+heuristic/heuristic.so
+heuristic/heuristic.dll
+
+# model
+rl/*.zip
